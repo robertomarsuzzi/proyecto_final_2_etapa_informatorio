@@ -1,0 +1,100 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}Inicio - Blog de Inteligencia Artificial{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background-color: #121212; /* Negro oscuro */
+        color: #e0e0e0; /* Texto claro para contraste */
+    }
+    .jumbotron {
+        background: linear-gradient(to right, #4e54c8, #8f94fb);
+        color: white;
+    }
+    .card {
+        transition: transform 0.3s;
+        background-color: #1e1e1e; /* Gris oscuro para las tarjetas */
+        color: #e0e0e0;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(255,255,255,0.1);
+    }
+    .ai-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+    .text-primary {
+        color: #64b5f6 !important; /* Azul claro */
+    }
+    .text-info {
+        color: #4dd0e1 !important; /* Cian claro */
+    }
+    .text-success {
+        color: #81c784 !important; /* Verde claro */
+    }
+    .text-danger {
+        color: #e57373 !important; /* Rojo claro */
+    }
+    .btn-outline-primary {
+        color: #64b5f6;
+        border-color: #64b5f6;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4 text-center text-primary">Bienvenido al Blog de Inteligencia Artificial</h1>
+    
+    <div class="jumbotron rounded-lg">
+        <h2 class="display-4">Explorando el Futuro de la IA</h2>
+        <p class="lead">Descubre las últimas novedades, avances y aplicaciones en el mundo de la Inteligencia Artificial.</p>
+        <hr class="my-4 bg-light">
+        <p>Desde el aprendizaje automático hasta la visión por computadora, nuestro blog cubre todos los aspectos de la IA.</p>
+        <a class="btn btn-light btn-lg" href="#" role="button">Leer más</a>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-4 text-center">
+            <div class="ai-icon">🧠</div>
+            <h3 class="text-info">Machine Learning</h3>
+            <p>Explora cómo las máquinas aprenden de los datos y mejoran con la experiencia.</p>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="ai-icon">💬</div>
+            <h3 class="text-success">Procesamiento del Lenguaje Natural</h3>
+            <p>Descubre cómo las máquinas entienden y generan lenguaje humano.</p>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="ai-icon">🤖</div>
+            <h3 class="text-danger">Robótica</h3>
+            <p>Aprende sobre los últimos avances en robótica impulsados por la IA.</p>
+        </div>
+    </div>
+
+    <h2 class="mt-5 text-center text-primary">Artículos Recientes</h2>
+    <div class="row">
+        {% for article in articles %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if article.image %}
+                <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">  <!-- Muestra la imagen del artículo si existe -->
+                {% else %}
+                <img src="{% static 'images/default_ai_image.jpg' %}" class="card-img-top" alt="IA">  <!-- Imagen por defecto si no hay imagen -->
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title text-primary">{{ article.title }}</h5>  <!-- Muestra el título del artículo -->
+                    <p class="card-text">{{ article.content|truncatewords:20 }}</p>  <!-- Muestra un resumen del contenido -->
+                    <a href="{% url 'article_detail' article.slug %}" class="btn btn-outline-primary">Leer más</a>  <!-- Enlace a los detalles del artículo -->
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">No hay artículos disponibles en este momento.</p>  <!-- Mensaje si no hay artículos -->
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

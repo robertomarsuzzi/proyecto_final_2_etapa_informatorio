@@ -1,0 +1,53 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .article-content {
+        background-color: #FFFFFF;  <!-- Color de fondo para el contenido del artículo -->
+        padding: 20px;  <!-- Espaciado interno -->
+        border-radius: 5px;  <!-- Bordes redondeados -->
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h2>{{ article.title }}</h2>
+<p>Autor: {{ article.author }}</p>
+<p>Fecha de publicación: {{ article.published_date }}</p>
+{% if article.category %}
+    <p>Categoría: {{ article.category.name }}</p>  <!-- Muestra la categoría del artículo si existe -->
+{% endif %}
+<div>
+    {{ article.content|safe }}  <!-- Muestra el contenido del artículo, permitiendo HTML seguro -->
+</div>
+
+{% if user == article.author %}
+    <a href="{% url 'article_edit' article.slug %}" class="btn btn-primary">Editar</a>  <!-- Enlace para editar el artículo -->
+    <a href="{% url 'article_delete' article.slug %}" class="btn btn-danger">Eliminar</a>  <!-- Enlace para eliminar el artículo -->
+{% endif %}
+
+<h3>Comentarios</h3>
+{% for comment in comments %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ comment.author.username }}</h5>  <!-- Muestra el nombre del autor del comentario -->
+            <h6 class="card-subtitle mb-2 text-muted">{{ comment.created_at }}</h6>  <!-- Muestra la fecha de creación del comentario -->
+            <p class="card-text">{{ comment.content }}</p>  <!-- Muestra el contenido del comentario -->
+        </div>
+    </div>
+{% empty %}
+    <p>No hay comentarios aún.</p>  <!-- Mensaje si no hay comentarios -->
+{% endfor %}
+
+{% if user.is_authenticated %}
+    <h4>Añadir un comentario</h4>
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}  <!-- Renderiza el formulario de comentario -->
+        <button type="submit" class="btn btn-primary">Enviar comentario</button>  <!-- Botón para enviar el comentario -->
+    </form>
+{% else %}
+    <p>Por favor <a href="{% url 'login' %}">inicia sesión</a> para dejar un comentario.</p>  <!-- Mensaje para usuarios no autenticados -->
+{% endif %}
+{% endblock %}

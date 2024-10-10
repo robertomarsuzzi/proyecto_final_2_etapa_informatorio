@@ -1,0 +1,24 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<h1>Lista de Artículos</h1>
+<div class="row">
+    {% for article in articles %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ article.title }}</h5>  <!-- Muestra el título del artículo -->
+                <p class="card-text">{{ article.content|truncatewords:30 }}</p>  <!-- Muestra un resumen del contenido -->
+                <a href="{% url 'article_detail' article.slug %}" class="btn btn-primary">Leer más</a>  <!-- Enlace a los detalles del artículo -->
+                {% if user.is_authenticated %}
+                <a href="{% url 'article_edit' article.slug %}" class="btn btn-secondary">Editar</a>  <!-- Enlace para editar el artículo -->
+                <a href="{% url 'article_delete' article.slug %}" class="btn btn-danger">Eliminar</a>  <!-- Enlace para eliminar el artículo -->
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No hay artículos disponibles.</p>  <!-- Mensaje si no hay artículos -->
+    {% endfor %}
+</div>
+{% endblock %}

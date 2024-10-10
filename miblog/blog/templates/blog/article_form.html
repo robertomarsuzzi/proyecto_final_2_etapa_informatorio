@@ -1,0 +1,31 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>{% if form.instance.pk %}Editar{% else %}Crear Nuevo{% endif %} Artículo</h2>
+<form method="post" enctype="multipart/form-data">  <!-- Asegúrate de incluir enctype para subir archivos -->
+    {% csrf_token %}  <!-- Token de seguridad para prevenir ataques CSRF -->
+    {{ form.non_field_errors }}  <!-- Muestra errores no relacionados con campos específicos -->
+    <div class="form-group">
+        {{ form.title.errors }}  <!-- Muestra errores del campo título -->
+        <label for="{{ form.title.id_for_label }}">Título:</label>
+        {{ form.title }}  <!-- Campo de entrada para el título -->
+    </div>
+    <div class="form-group">
+        {{ form.content.errors }}  <!-- Muestra errores del campo contenido -->
+        <label for="{{ form.content.id_for_label }}">Contenido:</label>
+        {{ form.content }}  <!-- Campo de entrada para el contenido del artículo -->
+    </div>
+    <div class="form-group">
+        {{ form.category.errors }}  <!-- Muestra errores del campo categoría -->
+        <label for="{{ form.category.id_for_label }}">Categoría:</label>
+        {{ form.category }}  <!-- Campo de selección para la categoría del artículo -->
+    </div>
+    <div class="form-group">
+        {{ form.image.errors }}  <!-- Muestra errores del campo imagen -->
+        <label for="{{ form.image.id_for_label }}">Imagen:</label>
+        {{ form.image }}  <!-- Campo para subir una imagen del artículo -->
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>  <!-- Botón para enviar el formulario -->
+</form>
+{% endblock %}
