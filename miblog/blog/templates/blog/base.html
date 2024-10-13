@@ -23,10 +23,7 @@
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'home' %}">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'about_us' %}">Acerca de Nosotros</a>  <!-- Enlace a la página About Us -->
-                    </li>
+                    
                     {% if user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'article_create' %}">Crear Post</a>
@@ -35,6 +32,10 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Gestionar Posts
                             </a>
+                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about_us' %}">Acerca de Nosotros</a>  <!-- Enlace a la página About Us -->
+                        </li>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="{% url 'article_list' %}">Listar Posts</a></li>
                                 <li><a class="dropdown-item" href="{% url 'article_create' %}">Crear Post</a></li>
