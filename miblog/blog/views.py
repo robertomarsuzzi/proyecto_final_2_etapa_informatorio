@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Article, Comment
+from .models import Article, Comment, Category
 from .forms import CommentForm, ArticleForm, SignUpForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -23,7 +23,7 @@ def home(request):
 
 
 
-def article_detail(request, slug):
+def article_detail(request):
     article = get_object_or_404(Article, slug=slug)
     comments = article.comments.all().order_by('-created_at')
     
@@ -47,8 +47,7 @@ def article_detail(request, slug):
 
 @login_required
 def article_edit(request, slug):
-    article = get_object_or_404(Article, slug=slug)  # Obtiene el artículo por slug o devuelve 404 si no existe
-    
+    article = get_object_or_404(Article, slug=slug)  # Asegúrate de que el slug se pase aquí
     if request.user != article.author:
         return redirect('home')  # Solo el autor puede editar sus artículos
 
@@ -72,7 +71,7 @@ def article_edit(request, slug):
 
 
 
-def category_detail(request, slug):
+def category_detail(request):
     category = get_object_or_404(Category, slug=slug)
     articles = Article.objects.filter(category=category, is_published=True)
     context = {
@@ -118,8 +117,8 @@ def article_create(request):
 
 @login_required
 
-def article_delete(request, slug):
-    article = get_object_or_404(Article, slug=slug)
+def article_delete(request):
+    article = get_object_or_404(Article)
     
     if request.user != article.author:
         return redirect('home')  # Solo el autor puede eliminar su artículo
@@ -193,7 +192,39 @@ def about_us(request):
 
 def article_list(request):
     articles = Article.objects.filter(is_published=True)  # Filtra los artículos publicados
+
+    # Filtrar por categoría
+    category_slug = request.GET.get('category')
+    if category_slug:
+        articles = articles.filter(category__slug=category_slug)
+
+    # Filtrar por antigüedad
+    order = request.GET.get('order')
+    if order == 'asc':
+        articles = articles.order_by('published_date')  # Antigüedad ascendente
+    elif order == 'desc':
+        articles = articles.order_by('-published_date')  # Antigüedad descendente
+
+    # Filtrar por orden alfabético
+    alphabet_order = request.GET.get('alphabet')
+    if alphabet_order == 'asc':
+        articles = articles.order_by('title')  # Orden alfabético ascendente
+    elif alphabet_order == 'desc':
+        articles = articles.order_by('-title')  # Orden alfabético descendente
+        
+        
+    articles = Article.objects.filter(is_published=True)  # Asegúrate de que haya artículos publicados
+    categories = Category.objects.all()  # Obtener todas las categorías para el filtro
+
     context = {
-        'articles': articles  # Pasa los artículos al contexto
+        'articles': articles,
+        'categories': categories,
     }
     return render(request, 'blog/article_list.html', context)  # Renderiza la plantilla con los artículos
+
+    def some_view(request):
+       context = {
+           'user': request.user,
+           # Otras variables de contexto
+       }
+       return render(request, 'blog/base.html', context)

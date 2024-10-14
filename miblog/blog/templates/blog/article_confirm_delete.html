@@ -3,7 +3,7 @@
 
 {% block content %}
 <h2>Confirmar eliminación</h2>
-<p>¿Estás seguro de que quieres eliminar el artículo "{{ object.title }}"?</p>  <!-- Mensaje de confirmación -->
+<p>¿Estás seguro de que quieres eliminar el artículo "{{ article.title }}"?</p>  <!-- Mensaje de confirmación -->
 <form method="post">
     {% csrf_token %}  <!-- Token de seguridad para prevenir ataques CSRF -->
     <button type="submit" class="btn btn-danger">Sí, eliminar</button>  <!-- Botón para confirmar la eliminación -->

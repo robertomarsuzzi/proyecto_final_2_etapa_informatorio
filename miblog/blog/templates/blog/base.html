@@ -14,7 +14,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{% url 'home' %}">
-                <img src="{{ MEDIA_URL }} "descarga.jpeg" alt="Logo" style="height: 40px;">  <!-- Logo en la barra de navegación -->
+                <img src="{{ MEDIA_URL }}descarga.jpeg" alt="Logo" style="height: 40px;">  <!-- Logo en la barra de navegación -->
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -32,15 +32,59 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Gestionar Posts
                             </a>
-                            </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'about_us' %}">Acerca de Nosotros</a>  <!-- Enlace a la página About Us -->
-                        </li>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="{% url 'article_list' %}">Listar Posts</a></li>
-                                <li><a class="dropdown-item" href="{% url 'article_create' %}">Crear Post</a></li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'article_list' %}">Listar Posts</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'article_edit' %}">Editar Post</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'article_delete' %}">Eliminar Post</a>
+                                </li>
                             </ul>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Filtrar Posts
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <form method="get" action="{% url 'article_list' %}" class="px-3 py-2">
+                                        <div class="form-group">
+                                            <label for="category" class="form-label">Categoría:</label>
+                                            <select name="category" id="category" class="form-select">
+                                                <option value="">Todas</option>
+                                                {% for category in categories %}
+                                                    <option value="{{ category.slug }}">{{ category.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="order" class="form-label">Antigüedad:</label>
+                                            <select name="order" id="order" class="form-select">
+                                                <option value="">Sin orden</option>
+                                                <option value="asc">Ascendente</option>
+                                                <option value="desc">Descendente</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="alphabet" class="form-label">Orden Alfabético:</label>
+                                            <select name="alphabet" id="alphabet" class="form-select">
+                                                <option value="">Sin orden</option>
+                                                <option value="asc">A-Z</option>
+                                                <option value="desc">Z-A</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary mt-2">Filtrar</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about_us' %}">Acerca de Nosotros</a>  <!-- Enlace a la página About Us -->
+
                     {% endif %}
                 </ul>
                 <ul class="navbar-nav">
@@ -54,13 +98,13 @@
                                 <button type="submit" class="btn btn-link nav-link">Cerrar sesión</button>
                             </form>
                         </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'register' %}">Registrarse</a>
-                        </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'register' %}">Registrarse</a>
+                            </li>
                     {% endif %}
                 </ul>
             </div>

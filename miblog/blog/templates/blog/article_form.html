@@ -22,6 +22,10 @@
         {{ form.category }}  <!-- Campo de selección para la categoría del artículo -->
     </div>
     <div class="form-group">
+        <label for="{{ form.slug.id_for_label }}">Slug:</label>
+        <input type="text" class="form-control" id="{{ form.slug.id_for_label }}" value="{{ form.slug.value }}" readonly>  <!-- Campo de entrada para el slug -->
+    </div>
+    <div class="form-group">
         {{ form.image.errors }}  <!-- Muestra errores del campo imagen -->
         <label for="{{ form.image.id_for_label }}">Imagen:</label>
         {{ form.image }}  <!-- Campo para subir una imagen del artículo -->

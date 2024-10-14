@@ -27,8 +27,6 @@ class Article(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)  # Genera el slug a partir del título
-            if not self.slug:
-                self.slug = str(uuid.uuid4())  # Genera un slug único si no se puede crear uno
         super().save(*args, **kwargs)  # Llama al método save de la clase base
 
     def get_absolute_url(self):
