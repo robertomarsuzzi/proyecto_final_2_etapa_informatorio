@@ -26,7 +26,7 @@ class Article(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)  # Genera el slug a partir del título
+            article.slug = slugify(self.title)  # Genera el slug a partir del título
         super().save(*args, **kwargs)  # Llama al método save de la clase base
 
     def get_absolute_url(self):

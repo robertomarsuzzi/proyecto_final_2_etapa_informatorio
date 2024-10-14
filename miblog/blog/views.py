@@ -17,13 +17,13 @@ def home(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
-        'articles': articles
+        'articles': page_obj
     }
     return render(request, 'blog/home.html', context)
 
 
 
-def article_detail(request):
+def article_detail(request, slug):
     article = get_object_or_404(Article, slug=slug)
     comments = article.comments.all().order_by('-created_at')
     
@@ -117,8 +117,8 @@ def article_create(request):
 
 @login_required
 
-def article_delete(request):
-    article = get_object_or_404(Article)
+def article_delete(request, slug):
+    article = get_object_or_404(Article, sulg=slug)
     
     if request.user != article.author:
         return redirect('home')  # Solo el autor puede eliminar su artículo
@@ -222,9 +222,9 @@ def article_list(request):
     }
     return render(request, 'blog/article_list.html', context)  # Renderiza la plantilla con los artículos
 
-    def some_view(request):
-       context = {
-           'user': request.user,
-           # Otras variables de contexto
-       }
-       return render(request, 'blog/base.html', context)
+def some_view(request):
+    context = {
+        'user': request.user,
+    # Otras variables de contexto
+    }
+    return render(request, 'blog/base.html', context)

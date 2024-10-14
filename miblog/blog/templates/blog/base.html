@@ -34,13 +34,19 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li>
+                                    
                                     <a class="dropdown-item" href="{% url 'article_list' %}">Listar Posts</a>
+                                    
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="{% url 'article_edit' %}">Editar Post</a>
+                                {% if article.slug %}
+                                        <a class="dropdown-item" href="{% url 'article_edit' article.slug %}">Editar Post</a>
+                                    {% endif %}
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="{% url 'article_delete' %}">Eliminar Post</a>
+                                    {% if article.slug %}
+                                        <a class="dropdown-item" href="{% url 'article_delete' article.slug %}">Eliminar Post</a>
+                                    {%endif%}
                                 </li>
                             </ul>
                         </li>

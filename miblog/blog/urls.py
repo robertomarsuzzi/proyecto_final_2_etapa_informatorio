@@ -7,8 +7,8 @@ urlpatterns = [
     path('articles/', article_list, name='article_list'),
     path('about/', about_us, name='about_us'),  # URL para la página "About Us"
     path('article/create/', article_create, name='article_create'),  # URL para crear un artículo
-    path('article/edit/<slug:slug>/', article_edit, name='article_edit'),  # URL para editar un artículo
-    path('article/delete/<slug:slug>/', article_delete, name='article_delete'),  # URL para eliminar un artículo
+    path('article/<slug:slug>/edit/', article_edit, name='article_edit'),  # URL para editar un artículo
+    path('article/<slug:slug>/delete/', article_delete, name='article_delete'),  # URL para eliminar un artículo
 ]
 
 if settings.DEBUG:
