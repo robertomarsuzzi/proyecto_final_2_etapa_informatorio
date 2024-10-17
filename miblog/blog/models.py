@@ -4,6 +4,8 @@ from django.utils.text import slugify
 from django.urls import reverse
 import uuid
 
+from tinymce.models import HTMLField
+
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)  # Nombre de la categoría
     description = models.TextField(blank=True, null=True)  # Descripción opcional de la categoría
@@ -18,7 +20,7 @@ class Category(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=200)  # Título del artículo
     slug = models.SlugField(unique=True, max_length=200)  # Slug único para la URL
-    content = models.TextField()  # Contenido del artículo
+    content = HTMLField() # Contenido del artículo
     author = models.ForeignKey(User, on_delete=models.CASCADE)  # Autor del artículo
     published_date = models.DateTimeField(auto_now_add=True)  # Fecha de publicación automática
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)  # Categoría del artículo
@@ -26,7 +28,7 @@ class Article(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            article.slug = slugify(self.title)  # Genera el slug a partir del título
+            self.slug = slugify(self.title)  # Genera el slug a partir del título
         super().save(*args, **kwargs)  # Llama al método save de la clase base
 
     def get_absolute_url(self):

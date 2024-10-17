@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',
+    
+    'tinymce',
+    
 ]
 
 MIDDLEWARE = [
@@ -56,8 +59,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-           os.path.join(BASE_DIR, 'templates'),
-           os.path.join(BASE_DIR, 'blog/templates'),
+        os.path.join(BASE_DIR, 'templates'),
+        os.path.join(BASE_DIR, 'blog/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -126,7 +129,7 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR / 'miblog/media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -140,3 +143,17 @@ LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'  # Redirige a la página de login si el usuario no está autenticado
 
 LOGIN_REDIRECT_URL = '/'
+
+
+
+
+TINYMCE_DEFAULT_CONFIG = {
+    'height': 360,
+    'width': 'auto',
+    'menubar': 'file edit view insert format tools table help',
+    'plugins': 'advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste code help wordcount',
+    'toolbar': 'undo redo | formatselect | bold italic backcolor | \
+                alignleft aligncenter alignright alignjustify | \
+                bullist numlist outdent indent | removeformat | help',
+    'content_css': '/static/css/custom_content.css',  # Opcional: Estilos personalizados
+}

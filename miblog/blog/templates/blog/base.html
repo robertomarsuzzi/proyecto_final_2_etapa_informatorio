@@ -8,13 +8,18 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Tus estilos personalizados -->
+    
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
     {% block extra_css %}{% endblock %}
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{% url 'home' %}">
-                <img src="{{ MEDIA_URL }}descarga.jpeg" alt="Logo" style="height: 40px;">  <!-- Logo en la barra de navegación -->
+                <img src="{% static 'logo.jpeg' %}" alt="Logo" style="height: 40px; width: auto;">
+
+                <!--<img src="{{ MEDIA_URL }}logo.jpeg" alt="Logo" style="height: 40px;">-->  <!-- Logo en la barra de navegación -->
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -34,20 +39,18 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li>
-                                    
                                     <a class="dropdown-item" href="{% url 'article_list' %}">Listar Posts</a>
-                                    
                                 </li>
-                                <li>
-                                {% if article.slug %}
-                                        <a class="dropdown-item" href="{% url 'article_edit' article.slug %}">Editar Post</a>
-                                    {% endif %}
-                                </li>
-                                <li>
-                                    {% if article.slug %}
-                                        <a class="dropdown-item" href="{% url 'article_delete' article.slug %}">Eliminar Post</a>
-                                    {%endif%}
-                                </li>
+                                {% for article in articles %}
+                                    <li class="dropdown-item">
+                                        <a   href="{% url 'article_edit' article.slug %}" class="btn btn-outline-primary btn-sm">Editar : {{ article.title }}</a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a href="{% url 'article_delete' article.slug %}" class="btn btn-outline-danger btn-sm" >Eliminar : {{ article.title }} </a>
+                                    </li>
+                                {% empty %}
+                                    <li><span class="dropdown-item">No hay artículos disponibles.</span></li>
+                                {% endfor %}
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -62,7 +65,9 @@
                                             <select name="category" id="category" class="form-select">
                                                 <option value="">Todas</option>
                                                 {% for category in categories %}
-                                                    <option value="{{ category.slug }}">{{ category.name }}</option>
+                                                <option value="{{ category.slug }}" {% if request.GET.category == category.slug %}selected{% endif %}>
+                                                    {{ category.name }}
+                                                </option>
                                                 {% endfor %}
                                             </select>
                                         </div>
@@ -70,16 +75,17 @@
                                             <label for="order" class="form-label">Antigüedad:</label>
                                             <select name="order" id="order" class="form-select">
                                                 <option value="">Sin orden</option>
-                                                <option value="asc">Ascendente</option>
-                                                <option value="desc">Descendente</option>
+                                                <option value="asc" {% if request.GET.order == 'asc' %}selected{% endif %}>Ascendente</option>
+                                                <option value="desc" {% if request.GET.order == 'desc' %}selected{% endif %}>Descendente</option>
                                             </select>
+                                                
                                         </div>
                                         <div class="form-group">
                                             <label for="alphabet" class="form-label">Orden Alfabético:</label>
                                             <select name="alphabet" id="alphabet" class="form-select">
                                                 <option value="">Sin orden</option>
-                                                <option value="asc">A-Z</option>
-                                                <option value="desc">Z-A</option>
+                                                <option value="asc" {% if request.GET.alphabet == 'asc' %}selected{% endif %}>A-Z</option>
+                                                <option value="desc" {% if request.GET.alphabet == 'desc' %}selected{% endif %}>Z-A</option>
                                             </select>
                                         </div>
                                         <button type="submit" class="btn btn-primary mt-2">Filtrar</button>
@@ -93,7 +99,7 @@
 
                     {% endif %}
                 </ul>
-                <ul class="navbar-nav">
+                <ul class="navbar-nav" >
                     {% if user.is_authenticated %}
                         <li class="nav-item">
                             <span class="nav-link">Hola, {{ user.username }}</span>
@@ -105,8 +111,9 @@
                             </form>
                         </li>
                         {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a>
+                        
+                            <li class="nav-item"  >
+                                <a class="nav-link"  href="{% url 'login' %}">Iniciar sesión</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'register' %}">Registrarse</a>
@@ -121,16 +128,18 @@
         {% block content %}
         {% endblock %}
     </main>
-
     <footer class="bg-dark text-light text-center py-3 mt-5">
         <div class="container">
             © 2024 Blog de IA - Todos los derechos reservados
         </div>
     </footer>
 
+    
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Tus scripts personalizados -->
-    {% block extra_js %}{% endblock %}
+    <!--{% block extra_js %}{% endblock %} -->
 </body>
+
 </html>

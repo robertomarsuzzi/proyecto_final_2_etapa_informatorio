@@ -4,7 +4,7 @@ from .forms import CommentForm, ArticleForm, SignUpForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.paginator import Paginator
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.utils.text import slugify
@@ -17,7 +17,7 @@ def home(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
-        'articles': page_obj
+        'articles': articles
     }
     return render(request, 'blog/home.html', context)
 
@@ -100,7 +100,7 @@ def article_create(request):
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES)  # Asegúrate de incluir request.FILES
         if form.is_valid():
-            article = form.save(commit=False)
+            article = form.save()
             article.author = request.user  # Asignar el autor
             article.slug = slugify(article.title)
             if not article.slug:
@@ -118,7 +118,7 @@ def article_create(request):
 @login_required
 
 def article_delete(request, slug):
-    article = get_object_or_404(Article, sulg=slug)
+    article = get_object_or_404(Article, slug=slug)
     
     if request.user != article.author:
         return redirect('home')  # Solo el autor puede eliminar su artículo
@@ -165,7 +165,41 @@ class ArticleListView(ListView):
     model = Article
     template_name = 'blog/article_list.html'
     context_object_name = 'articles'
-    ordering = ['-published_date']
+    
+    
+    def get_queryset(self):
+        queryset = Article.objects.all()
+        category = self.request.GET.get('category')
+        order = self.request.GET.get('order')
+        alphabet = self.request.GET.get('alphabet')
+
+        # Filtra por categoría si se seleccionó una
+        if category:
+            queryset = queryset.filter(category__slug=category)
+
+        # Ordena por antigüedad
+        if order == 'asc':
+            queryset = queryset.order_by('published_date')  # Ascendente
+        elif order == 'desc':
+            queryset = queryset.order_by('-published_date')  # Descendente
+
+        # Ordena alfabéticamente
+        if alphabet == 'asc':
+            queryset = queryset.order_by('title')  # A-Z
+        elif alphabet == 'desc':
+            queryset = queryset.order_by('-title')  # Z-A
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()  # Asegúrate de tener las categorías disponibles
+        return context
+    
+class ArticleDetailView(DetailView):
+    model = Article
+    template_name = 'blog/article_detail.html'  # Ruta a la plantilla de detalle
+    context_object_name = 'article'
 
 @login_required
 def article_create(request):
@@ -191,6 +225,7 @@ def about_us(request):
     return render(request, 'blog/about_us.html')  # Renderiza la plantilla about_us.html
 
 def article_list(request):
+    categories = Category.objects.all()
     articles = Article.objects.filter(is_published=True)  # Filtra los artículos publicados
 
     # Filtrar por categoría
@@ -213,9 +248,6 @@ def article_list(request):
         articles = articles.order_by('-title')  # Orden alfabético descendente
         
         
-    articles = Article.objects.filter(is_published=True)  # Asegúrate de que haya artículos publicados
-    categories = Category.objects.all()  # Obtener todas las categorías para el filtro
-
     context = {
         'articles': articles,
         'categories': categories,

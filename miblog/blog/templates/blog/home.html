@@ -54,7 +54,7 @@
         <p class="lead">Descubre las últimas novedades, avances y aplicaciones en el mundo de la Inteligencia Artificial.</p>
         <hr class="my-4 bg-light">
         <p>Desde el aprendizaje automático hasta la visión por computadora, nuestro blog cubre todos los aspectos de la IA.</p>
-        <a class="btn btn-light btn-lg" href="#" role="button">Leer más</a>
+        <a class="btn btn-light btn-lg" href="{% url 'article_list' %}" role="button">Leer más</a>
     </div>
 
     <div class="row mt-5">
@@ -83,12 +83,16 @@
                 {% if article.image %}
                 <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">  <!-- Muestra la imagen del artículo si existe -->
                 {% else %}
-                <img src="{% static 'images/default_ai_image.jpg' %}" class="card-img-top" alt="IA">  <!-- Imagen por defecto si no hay imagen -->
+                <img src="{% static 'images/descarga(4)' %}" class="card-img-top" alt="IA">  <!-- Imagen por defecto si no hay imagen -->
                 {% endif %}
                 <div class="card-body">
                     <h5 class="card-title text-primary">{{ article.title }}</h5>  <!-- Muestra el título del artículo -->
                     <p class="card-text">{{ article.content|truncatewords:20 }}</p>  <!-- Muestra un resumen del contenido -->
+                {% if article.slug %}
                     <a href="{% url 'article_detail' article.slug %}" class="btn btn-outline-primary">Leer más</a>  <!-- Enlace a los detalles del artículo -->
+                {% else %}
+                    <button class="btn btn-primary" disabled>Leer más</button>
+                {% endif %}    
                 </div>
             </div>
         </div>
