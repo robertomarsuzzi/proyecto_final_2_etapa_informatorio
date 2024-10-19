@@ -2,8 +2,71 @@
 {% load static %}
 
 {% block content %}
+<div text-aling = "center">
 <h1>Acerca de Nosotros</h1>
 <p>Bienvenido a nuestro blog de inteligencia artificial. Aquí compartimos artículos sobre las últimas tendencias y desarrollos en el campo de la IA.</p>
 <p>Nuestro equipo está compuesto por expertos en tecnología y apasionados por la inteligencia artificial.</p>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col">
+        <div class="card h-100">
+            
+            <img src="{% static 'images/julieta.jpeg' %}" alt="Julieta" class="card-img-top" width="300" height= "500">
+            
+            <div class="card-body">
+                <div class="p-3 mb-2 bg-primary-subtle text-primary-emphasis >
+                <h5 class="card-title">Julieta Magali Arevalo</h5>
+                <p class="card-text">
+                    <a href="https://www.linkedin.com/in/julieta-arevalo-9237a4321/" class = "text-reset">Linkedin</a><br>
+                    <a href="https://github.com/juli-m4" class = "text-reset">Github</a><br>
+                    <a href="mailto:arevalojuli2@gmail.com" class = "text-reset">Envíame un correo</a>
+
+                
+                </p>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100">
+            <img src="{% static 'images/roberto.jpg' %}" alt="Roberto" class="card-img-top" width="300" height= "500">
+            
+            <div class="card-body">
+                <div class="p-3 mb-2 bg-primary-subtle text-primary-emphasis >
+                <h5 class="card-title">Roberto Rubens Marsuzzi</h5>
+                <p class="card-text">
+                    <a href="https://www.linkedin.com/in/roberto-marsuzzi-b34418223/">Linkedin</a><br>
+                    <a href="https://github.com/robertomarsuzzi">Github</a><br>
+                    <a href="mailto:robertomarsuzzi@gmail.com">Email</a>
+
+
+                </p>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100">
+            <img src="{% static 'images/agostina.jpeg' %}" alt="agostina" class="card-img-top" width="300" height= "500">
+            
+            <div class="card-body" >
+                <div class="p-3 mb-2 bg-primary-subtle text-primary-emphasis >
+                <h5 class="card-title" >Agostina Belen Mattina</h5>
+                <p class="card-text" >
+                    <a href="https://www.linkedin.com/in/agostina-belen-mattina-351523302/">Linkedin</a><br>
+                    <a href="https://github.com/AgostinaMattina">Github</a><br>
+                    <a href="mailto:agostinabelenmattina@hotmail.com">Email</a>
+
+                    
+                    
+
+                </p>
+                </div
+            </div>
+        
+        </div>
+    </div>
+</div>
 <p>¡Gracias por visitarnos!</p>
+</div>
 {% endblock %}

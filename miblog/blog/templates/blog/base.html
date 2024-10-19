@@ -94,8 +94,7 @@
                             </ul>
                         </li>
                 
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'about_us' %}">Acerca de Nosotros</a>  <!-- Enlace a la página About Us -->
+                        <!-- Enlace a la página About Us -->
 
                     {% endif %}
                 </ul>
@@ -110,6 +109,9 @@
                                 <button type="submit" class="btn btn-link nav-link">Cerrar sesión</button>
                             </form>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about_us' %}">Acerca de Nosotros</a> 
+                        </li>
                         {% else %}
                         
                             <li class="nav-item"  >
@@ -117,6 +119,9 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'register' %}">Registrarse</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'about_us' %}">Acerca de Nosotros</a> 
                             </li>
                     {% endif %}
                 </ul>
